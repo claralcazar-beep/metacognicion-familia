@@ -22,14 +22,15 @@ export default function Leccion() {
   const [celebrate, setCelebrate] = useState(null);
 
   useEffect(() => {
-    if (!ready || !lesson) return;
+    if (!ready) return;
     loadProgress(profile.id).then((m) => {
       const r = m[id] || {};
       setRec(r);
       setNote(r.note || "");
       if (r.quiz_done) setStep(2);
     });
-  }, [ready, profile, id, lesson]);
+    // Solo al abrir la lección: si se repitiera en cada render, borraría la nota mientras se escribe
+  }, [ready, id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
