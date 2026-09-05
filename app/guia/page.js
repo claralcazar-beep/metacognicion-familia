@@ -1,6 +1,6 @@
 "use client";
 import { useFamily } from "@/lib/useFamily";
-import { PRINCIPLES, BOOKS } from "@/data/guia";
+import { PRINCIPLES, BOOKS, TAREAS_MAMA, TAREAS_NINOS } from "@/data/guia";
 import { GLOSARIO } from "@/data/intro";
 import { Nav, Loading } from "@/components/ui";
 
@@ -9,6 +9,28 @@ const Box = ({ title, items, cls }) => (
     <h2 className="font-bold mb-2">{title}</h2>
     <div className={`rounded-2xl px-4 py-3 mb-6 text-base leading-relaxed ${cls}`}>
       {items.map((t, i) => <div key={i}>{t}</div>)}
+    </div>
+  </>
+);
+
+
+const Tareas = ({ data, title }) => (
+  <>
+    <h2 className="font-bold mb-2">{title}</h2>
+    <div className="mb-6">
+      {data.map((w, i) => (
+        <details key={i} className="rounded-2xl border-2 border-linea mb-2 overflow-hidden" open={i === 0}>
+          <summary className="px-4 py-3 font-semibold text-sm cursor-pointer select-none">{w.s}</summary>
+          <ul className="px-4 pb-3">
+            {w.items.map((t, j) => (
+              <li key={j} className="flex gap-2 py-1.5 text-sm leading-relaxed border-t border-linea">
+                <span className="text-menta font-bold">✓</span>
+                <span>{t}</span>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ))}
     </div>
   </>
 );
@@ -35,11 +57,14 @@ export default function Guia() {
       />
 
       {kids ? (
+        <>
+        <Tareas data={TAREAS_NINOS} title="Mis tareas por semana" />
         <Box
           title="Trucos de pro"
           cls="bg-lilaSuave"
           items={["Cierra el cuaderno y cuéntalo con tus palabras.", "Enséñaselo a alguien (o a un peluche).", "Di «mi hipótesis es…» en vez de «yo sé».", "Agrega «todavía» a cada «no sé».", "Bloques de 15 minutos y 3 de moverte.", "Pide ayuda contando qué probaste.", "Duerme bien: el cerebro guarda de noche."]}
         />
+        </>
       ) : (
         <>
           <h2 className="font-bold mb-2">Las 10 cosas</h2>
@@ -56,6 +81,8 @@ export default function Guia() {
             cls="bg-rosaSuave"
             items={["¿Cómo lo supiste?", "¿Cómo sabes que ya lo sabes?", "¿Qué probaste antes de pedir ayuda?", "¿Cuál es tu hipótesis?", "¿Qué te enseñó ese error?"]}
           />
+          <Tareas data={TAREAS_MAMA} title="Tus tareas por semana" />
+          <Tareas data={TAREAS_NINOS} title="Las tareas de los niños" />
           <h2 className="font-bold mb-2">Glosario</h2>
           <div className="mb-6">
             {GLOSARIO.map((g, i) => (
